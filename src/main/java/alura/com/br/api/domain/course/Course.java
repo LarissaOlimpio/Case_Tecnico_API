@@ -31,6 +31,7 @@ public class Course {
     private String code;
 
     @ManyToOne
+    @JoinColumn(name = "instructor_username", referencedColumnName = "username")
     private Users instructor;
 
     @NotBlank

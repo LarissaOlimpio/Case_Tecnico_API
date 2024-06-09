@@ -3,21 +3,30 @@ package alura.com.br.api.service;
 import alura.com.br.api.domain.course.Course;
 import alura.com.br.api.domain.course.CourseRepository;
 import alura.com.br.api.domain.course.Status;
+import alura.com.br.api.domain.users.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public class CourseServiceTest {
+    @Mock
+    private UserRepository userRepository;
 
     @InjectMocks
     private CourseService courseService;
@@ -28,7 +37,14 @@ public class CourseServiceTest {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
+
+        Course course = new Course();
+        course.setCode("code");
+        course.setStatus(Status.ACTIVE);
+
+        when(courseRepository.findByCode("code")).thenReturn(Optional.of(course));
     }
+
 
     @Test
     public void testDeactivateCourse() {
@@ -44,14 +60,18 @@ public class CourseServiceTest {
         assertEquals(Status.INACTIVE, course.getStatus());
     }
 
+
     @Test
     public void testDeactivateCourseNotFound() {
         when(courseRepository.findByCode("code")).thenReturn(Optional.empty());
 
-        assertThrows(RuntimeException.class, () -> {
+        Exception exception = assertThrows(RuntimeException.class, () -> {
             courseService.deactivateCourse("code");
         });
+
+        assertEquals("Course not found", exception.getMessage());
     }
+
 
     @Test
     public void testListCourses() {
@@ -64,4 +84,5 @@ public class CourseServiceTest {
 
         verify(courseRepository, times(1)).findAll(pageable);
     }
+
 }

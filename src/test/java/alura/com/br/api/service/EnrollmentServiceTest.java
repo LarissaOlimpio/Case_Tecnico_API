@@ -1,9 +1,11 @@
 package alura.com.br.api.service;
+
 import alura.com.br.api.domain.course.Course;
 import alura.com.br.api.domain.course.CourseRepository;
 import alura.com.br.api.domain.course.Status;
 import alura.com.br.api.domain.enrollment.Enrollment;
 import alura.com.br.api.domain.enrollment.EnrollmentRepository;
+import alura.com.br.api.domain.users.Users;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -14,6 +16,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
+
 
 public class EnrollmentServiceTest {
 
@@ -26,21 +29,34 @@ public class EnrollmentServiceTest {
     @Mock
     private CourseRepository courseRepository;
 
+    private Course course;
+    private Enrollment enrollment;
+
     @BeforeEach
     public void init() {
         MockitoAnnotations.openMocks(this);
+        course = new Course();
+        course.setId(1L);
+        course.setStatus(Status.ACTIVE);
+
+        enrollment = new Enrollment();
+        enrollment.setCourse(course);
     }
 
     @Test
     public void testEnrollUserInCourse() {
+        Users user = mock(Users.class);
+
         Course course = new Course();
         course.setId(1L);
         course.setStatus(Status.ACTIVE);
 
+        when(courseRepository.findById(anyLong())).thenReturn(Optional.of(course));
+
         Enrollment enrollment = new Enrollment();
         enrollment.setCourse(course);
+        enrollment.setUser(user);
 
-        when(courseRepository.findById(anyLong())).thenReturn(Optional.of(course));
         when(enrollmentRepository.existsByUserAndCourse(any(), any())).thenReturn(false);
         when(enrollmentRepository.save(any())).thenReturn(enrollment);
 
@@ -51,11 +67,9 @@ public class EnrollmentServiceTest {
         verify(enrollmentRepository, times(1)).save(any());
     }
 
+
     @Test
     public void testEnrollUserInCourseWhenCourseNotFound() {
-        Enrollment enrollment = new Enrollment();
-        enrollment.setCourse(new Course());
-
         when(courseRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThrows(RuntimeException.class, () -> enrollmentService.enrollUserInCourse(enrollment));
@@ -63,12 +77,7 @@ public class EnrollmentServiceTest {
 
     @Test
     public void testEnrollUserInCourseWhenCourseNotActive() {
-        Course course = new Course();
-        course.setId(1L);
         course.setStatus(Status.INACTIVE);
-
-        Enrollment enrollment = new Enrollment();
-        enrollment.setCourse(course);
 
         when(courseRepository.findById(anyLong())).thenReturn(Optional.of(course));
 
@@ -77,16 +86,11 @@ public class EnrollmentServiceTest {
 
     @Test
     public void testEnrollUserInCourseWhenUserAlreadyEnrolled() {
-        Course course = new Course();
-        course.setId(1L);
-        course.setStatus(Status.ACTIVE);
-
-        Enrollment enrollment = new Enrollment();
-        enrollment.setCourse(course);
-
         when(courseRepository.findById(anyLong())).thenReturn(Optional.of(course));
         when(enrollmentRepository.existsByUserAndCourse(any(), any())).thenReturn(true);
 
         assertThrows(RuntimeException.class, () -> enrollmentService.enrollUserInCourse(enrollment));
     }
+
 }
+

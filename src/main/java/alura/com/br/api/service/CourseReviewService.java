@@ -4,6 +4,7 @@ import alura.com.br.api.domain.course.Course;
 import alura.com.br.api.domain.course.CourseRepository;
 import alura.com.br.api.domain.review.CourseReview;
 import alura.com.br.api.domain.review.CourseReviewRepository;
+import alura.com.br.api.domain.users.Role;
 import alura.com.br.api.domain.users.UserRepository;
 import alura.com.br.api.domain.users.Users;
 import jakarta.persistence.EntityNotFoundException;
@@ -27,7 +28,7 @@ public class CourseReviewService {
 
     public CourseReview createReview(CourseReview review) {
         Users user = review.getUser();
-        if (!user.getRole().equals("STUDENT")) {
+        if (!user.getRole().equals(Role.STUDENT)) {
             throw new IllegalArgumentException("Only students can review courses");
         }
         Course course = courseRepository.findById(review.getCourse().getId())

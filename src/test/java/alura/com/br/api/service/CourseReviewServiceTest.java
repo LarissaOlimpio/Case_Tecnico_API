@@ -4,6 +4,7 @@ import alura.com.br.api.domain.course.Course;
 import alura.com.br.api.domain.course.CourseRepository;
 import alura.com.br.api.domain.review.CourseReview;
 import alura.com.br.api.domain.review.CourseReviewRepository;
+import alura.com.br.api.domain.users.Role;
 import alura.com.br.api.domain.users.UserRepository;
 import alura.com.br.api.domain.users.Users;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,7 +42,11 @@ public class CourseReviewServiceTest {
     @Test
     public void testCreateReview() {
         CourseReview review = new CourseReview();
-        Users instructor = new Users();
+        Users user = mock(Users.class);
+        when(user.getRole()).thenReturn(Role.STUDENT);
+        review.setUser(user);
+
+        Users instructor = mock(Users.class);
         Course course = new Course();
         course.setId(1L);
         course.setInstructor(instructor);
@@ -51,18 +56,11 @@ public class CourseReviewServiceTest {
         when(courseRepository.findById(anyLong())).thenReturn(Optional.of(course));
         when(courseReviewRepository.save(any())).thenReturn(review);
 
-        CourseReview result = null;
-        try {
-            result = courseReviewService.createReview(review);
-        } catch (NullPointerException e) {
-            System.out.println("User is null!");
-        }
+        CourseReview result = courseReviewService.createReview(review);
 
-        if (result != null) {
-            verify(courseRepository, times(1)).findById(anyLong());
-            verify(courseReviewRepository, times(1)).save(any());
-            assertEquals(review, result);
-        }
+        verify(courseRepository, times(1)).findById(anyLong());
+        verify(courseReviewRepository, times(1)).save(any());
+        assertEquals(review, result);
     }
 
 

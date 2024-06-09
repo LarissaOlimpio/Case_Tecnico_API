@@ -35,3 +35,9 @@ build/
 src/main/resources/application.properties
 
 src/test/java/resources/application.properties
+src/main/resources/application-test.properties
+src/main/resources/application-prod.properties
+
+env
+mysql-data
+

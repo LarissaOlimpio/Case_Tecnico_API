@@ -1,4 +1,5 @@
 package alura.com.br.api.service;
+
 import alura.com.br.api.domain.users.UserRepository;
 import alura.com.br.api.domain.users.Users;
 import org.junit.jupiter.api.BeforeEach;

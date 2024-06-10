@@ -9,14 +9,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Optional;
 
@@ -45,7 +40,6 @@ public class CourseServiceTest {
         when(courseRepository.findByCode("code")).thenReturn(Optional.of(course));
     }
 
-
     @Test
     public void testDeactivateCourse() {
         Course course = new Course();
@@ -60,7 +54,6 @@ public class CourseServiceTest {
         assertEquals(Status.INACTIVE, course.getStatus());
     }
 
-
     @Test
     public void testDeactivateCourseNotFound() {
         when(courseRepository.findByCode("code")).thenReturn(Optional.empty());
@@ -71,7 +64,6 @@ public class CourseServiceTest {
 
         assertEquals("Course not found", exception.getMessage());
     }
-
 
     @Test
     public void testListCourses() {

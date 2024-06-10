@@ -17,15 +17,12 @@ public class UserServiceTest {
 
     @InjectMocks
     private UserService userService;
-
     @Mock
     private UserRepository userRepository;
-
     @BeforeEach
     public void init() {
         MockitoAnnotations.openMocks(this);
     }
-
     @Test
     public void testCreateUser() {
         Users user = new Users();
@@ -36,7 +33,6 @@ public class UserServiceTest {
         verify(userRepository, times(1)).save(any());
         assertEquals(user, result);
     }
-
     @Test
     public void testGetUserByUsername() {
         Users user = new Users();
@@ -48,7 +44,6 @@ public class UserServiceTest {
         verify(userRepository, times(1)).findByUsername(anyString());
         assertEquals(user, result.get());
     }
-
     @Test
     public void testGetUserByUsernameNotFound() {
         String username = "testUser";

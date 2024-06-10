@@ -36,7 +36,6 @@ public class CourseController {
     }
 
 
-
     @PutMapping("/{code}/deactivate")
     public ResponseEntity<Void> deactivateCourse(@PathVariable String code) {
         courseService.deactivateCourse(code);
@@ -48,12 +47,12 @@ public class CourseController {
         Page<Course> courses = courseService.listCourses(pageable, status);
         return new ResponseEntity<>(courses, HttpStatus.OK);
     }
+
     @PostMapping("/{courseId}/reviews")
     public ResponseEntity<CourseReview> createReview(@PathVariable Long courseId, @Valid @RequestBody CourseReview review) {
         CourseReview createdReview = courseReviewService.createReview(review);
         return new ResponseEntity<>(createdReview, HttpStatus.CREATED);
     }
-
 
     @GetMapping("/{courseId}/nps")
     public ResponseEntity<Double> calculateNPS(@PathVariable Long courseId) {

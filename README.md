@@ -84,7 +84,7 @@ Depois que o projeto estiver rodando, você pode acessar a documentação da API
 
 Substitua `localhost:8080` pelo endereço e porta onde seu aplicativo Spring está sendo executado, se for diferente. Este link levará você à interface do Swagger UI, onde você pode visualizar e interagir com a API documentada.
 
-Lembre-se de que o SpringDoc deve estar corretamente configurado em seu projeto para que isso funcione. Se você tiver problemas, verifique sua configuração do SpringDoc e as anotações em seus controladores e modelos de API.
+Se você tiver problemas, verifique sua configuração do SpringDoc e as anotações em seus controladores e modelos de API.
 
 
 

@@ -67,14 +67,12 @@ public class EnrollmentServiceTest {
         verify(enrollmentRepository, times(1)).save(any());
     }
 
-
     @Test
     public void testEnrollUserInCourseWhenCourseNotFound() {
         when(courseRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThrows(RuntimeException.class, () -> enrollmentService.enrollUserInCourse(enrollment));
     }
-
     @Test
     public void testEnrollUserInCourseWhenCourseNotActive() {
         course.setStatus(Status.INACTIVE);

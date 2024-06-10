@@ -63,7 +63,6 @@ public class CourseReviewServiceTest {
         assertEquals(review, result);
     }
 
-
     @Test
     public void testCalculateNPS() {
         CourseReview review1 = new CourseReview();

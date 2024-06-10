@@ -44,12 +44,13 @@ O projeto é um sistema técnico para a plataforma Alura, com o objetivo de gere
 - `Spring Data JPA`
 - `Spring Web MVC`
 - `Flyway Database Migration`
-- ` Hibernate Validator (Spring Validation)`
+- `Hibernate Validator (Spring Validation)`
 - `Spring Boot Developer Tools`
 - `H2 Database Engine`
 - `Project Lombok`
 - `Spring Boot Test Starter`
 - `Spring Doc`
+- `MySql`
 
 ## 🛠 Como rodar o projeto
 

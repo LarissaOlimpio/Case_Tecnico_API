@@ -43,21 +43,7 @@ public class CourseReviewService {
 
 
     public double calculateNPS(Long courseId) {
-        List<CourseReview> reviews = courseReviewRepository.findByCourseId(courseId);
-        int promoters = 0;
-        int detractors = 0;
-
-        for (CourseReview review : reviews) {
-            if (review.getRating() >= 9) {
-                promoters++;
-            } else if (review.getRating() <= 6) {
-                detractors++;
-            }
-        }
-
-        int totalResponses = reviews.size();
-        double nps = (double) (promoters - detractors) / totalResponses * 100;
-        return nps;
+        return courseReviewRepository.calculateNPS(courseId);
     }
 
 }

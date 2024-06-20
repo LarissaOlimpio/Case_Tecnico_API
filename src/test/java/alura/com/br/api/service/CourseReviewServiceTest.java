@@ -5,16 +5,12 @@ import alura.com.br.api.domain.course.CourseRepository;
 import alura.com.br.api.domain.review.CourseReview;
 import alura.com.br.api.domain.review.CourseReviewRepository;
 import alura.com.br.api.domain.users.Role;
-import alura.com.br.api.domain.users.UserRepository;
 import alura.com.br.api.domain.users.Users;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -27,9 +23,6 @@ public class CourseReviewServiceTest {
 
     @Mock
     private CourseReviewRepository courseReviewRepository;
-
-    @Mock
-    private UserRepository userRepository;
 
     @Mock
     private CourseRepository courseRepository;
@@ -65,17 +58,12 @@ public class CourseReviewServiceTest {
 
     @Test
     public void testCalculateNPS() {
-        CourseReview review1 = new CourseReview();
-        review1.setRating(10);
-        CourseReview review2 = new CourseReview();
-        review2.setRating(6);
-        List<CourseReview> reviews = Arrays.asList(review1, review2);
-        when(courseReviewRepository.findByCourseId(anyLong())).thenReturn(reviews);
+        when(courseReviewRepository.calculateNPS(anyLong())).thenReturn(50.0);
 
         double result = courseReviewService.calculateNPS(1L);
 
-        verify(courseReviewRepository, times(1)).findByCourseId(anyLong());
-        assertEquals(0.0, result);
+        verify(courseReviewRepository, times(1)).calculateNPS(anyLong());
+        assertEquals(50.0, result);
     }
 
 }
